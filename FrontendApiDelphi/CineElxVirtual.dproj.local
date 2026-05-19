@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BorlandProject>
+	<Transactions>
+    <Transaction>2026/04/15 16:27:37.000.628,=C:\Users\borja\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
+    <Transaction>2026/05/18 16:41:49.000.002,=C:\Users\borja\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
+    <Transaction>2026/05/18 16:42:24.000.932,C:\Users\borja\Desktop\FrontendApiDelphi\Unit1.dfm=C:\Users\borja\Documents\Embarcadero\Studio\Projects\Unit1.dfm</Transaction>
+    <Transaction>2026/05/18 16:42:24.000.932,C:\Users\borja\Desktop\FrontendApiDelphi\Unit1.pas=C:\Users\borja\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
+    <Transaction>2026/05/18 16:42:28.000.391,C:\Users\borja\Desktop\FrontendApiDelphi\Project1.dproj=C:\Users\borja\Documents\Embarcadero\Studio\Projects\Project1.dproj</Transaction>
+    <Transaction>2026/05/19 09:20:10.009,C:\Users\rambl\OneDrive\Desktop\FrontendApiDelphi\FrontendApiDelphi\uLogin.pas=C:\Users\rambl\OneDrive\Desktop\FrontendApiDelphi\FrontendApiDelphi\Unit1.pas</Transaction>
+    <Transaction>2026/05/19 09:20:10.009,C:\Users\rambl\OneDrive\Desktop\FrontendApiDelphi\FrontendApiDelphi\uLogin.dfm=C:\Users\rambl\OneDrive\Desktop\FrontendApiDelphi\FrontendApiDelphi\Unit1.dfm</Transaction>
+    <Transaction>2026/05/19 09:20:23.687,C:\Users\rambl\OneDrive\Desktop\FrontendApiDelphi\FrontendApiDelphi\CineElxVirtual.dproj=C:\Users\rambl\OneDrive\Desktop\FrontendApiDelphi\FrontendApiDelphi\Project1.dproj</Transaction>
+  </Transactions>
+</BorlandProject>
