@@ -39,27 +39,37 @@ object Form1: TForm1
     Left = 0
     Top = 26
     Width = 950
-    Height = 26
+    Height = 29
+    Margins.Left = 10
+    Margins.Top = 10
+    Margins.Right = 10
+    Margins.Bottom = 10
     ActionManager = ActionManager1
+    Anchors = [akLeft, akTop, akRight, akBottom]
     Color = clMenuBar
     ColorMap.DisabledFontColor = 10461087
     ColorMap.HighlightColor = clWhite
     ColorMap.BtnSelectedFont = clBlack
     ColorMap.UnusedColor = clWhite
-    Font.Charset = DEFAULT_CHARSET
+    Font.Charset = ANSI_CHARSET
     Font.Color = clBlack
-    Font.Height = -12
-    Font.Name = 'Segoe UI'
-    Font.Style = []
+    Font.Height = -15
+    Font.Name = 'Yu Gothic'
+    Font.Style = [fsBold]
+    HorzMargin = 0
+    Orientation = boRightToLeft
     ParentFont = False
     Spacing = 0
-    ExplicitHeight = 25
   end
   object tbNavLateral: TActionToolBar
     Left = 0
-    Top = 52
-    Width = 56
-    Height = 548
+    Top = 55
+    Width = 130
+    Height = 545
+    Margins.Left = 300
+    Margins.Top = 300
+    Margins.Right = 300
+    Margins.Bottom = 300
     ActionManager = ActionManager1
     Align = alLeft
     Color = clMenuBar
@@ -67,15 +77,16 @@ object Form1: TForm1
     ColorMap.HighlightColor = clWhite
     ColorMap.BtnSelectedFont = clBlack
     ColorMap.UnusedColor = clWhite
-    Font.Charset = DEFAULT_CHARSET
+    Constraints.MinWidth = 130
+    Font.Charset = ANSI_CHARSET
     Font.Color = clBlack
-    Font.Height = -12
-    Font.Name = 'Segoe UI'
+    Font.Height = -16
+    Font.Name = 'Yu Gothic'
     Font.Style = []
+    HorzMargin = 10
     ParentFont = False
     Spacing = 0
-    ExplicitTop = 51
-    ExplicitHeight = 549
+    ExplicitWidth = 140
   end
   object ImageList1: TImageList
     ColorDepth = cd32Bit
@@ -384,7 +395,6 @@ object Form1: TForm1
           item
             Action = actPeliculas
             Caption = '&Pel'#237'culas'
-            ImageIndex = 0
           end
           item
             Action = actClientes
