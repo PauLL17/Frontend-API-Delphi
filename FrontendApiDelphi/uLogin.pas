@@ -27,14 +27,21 @@ var
 
 implementation
 
+uses
+  uAPI;
+
 {$R *.dfm}
 
 procedure TfLogin.btnAceptarClick(Sender: TObject);
+var
+  sMensaje: string;
 begin
-  { Botón Aceptar del formulario de login
-    - Valida que los campos no estén vacíos
-    - llamar a uAPI (POST /login) cuando esté implementada
-    - si login OK, abrir fPrincipal y cerrar este form }
+  { Botón Aceptar del login
+    - Valida campos no vacíos
+    - Llama a LoginAPI con las credenciales introducidas
+    - Si OK: abre fPrincipal y cierra el login
+    - Si error: muestra el mensaje devuelto por la API }
+
   if Trim(edtUsuario.Text) = '' then
   begin
     ShowMessage('Introduce un nombre de usuario.');
@@ -49,7 +56,17 @@ begin
     Exit;
   end;
 
-  ShowMessage('Login pendiente de implementar (uAPI).');
+  btnAceptar.Enabled := False;
+  try
+    if LoginAPI(edtUsuario.Text, edtClave.Text, sMensaje) then
+    begin
+      ShowMessage('Login correcto. Bienvenido, ' + sNombreUsuario +' (' + sRolUsuario + ')');
+    end
+    else
+      ShowMessage('Error al iniciar sesión: ' + sMensaje);
+  finally
+    btnAceptar.Enabled := True;
+  end;
 end;
 
 end.

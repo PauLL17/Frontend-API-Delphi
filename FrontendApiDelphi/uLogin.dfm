@@ -34,13 +34,14 @@ object fLogin: TfLogin
     Height = 45
     Align = alTop
     BevelOuter = bvNone
-    Caption = 'CineElxVirtual - 2026'
-    Color = 10510110
+    Caption = 'Iniciar Sesi'#243'n'
+    Color = clHotLight
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWhite
     Font.Height = -15
     Font.Name = 'Segoe UI'
     Font.Style = [fsBold]
+    ParentBackground = False
     ParentFont = False
     TabOrder = 3
   end
