@@ -1,0 +1,31 @@
+﻿program CineElxVirtual;
+
+uses
+  Vcl.Forms,
+  System.UITypes,        // ← Agrega esta línea para que reconozca mrOk
+  uAPI in 'uAPI.pas',
+  uLogin in 'uLogin.pas' {fLogin},
+  uFrmPeliculas in 'uFrmPeliculas.pas' {frmPeliculas};
+
+{$R *.res}
+
+var
+frmPeliculas: TfrmPeliculas;
+
+begin
+  Application.Initialize;
+  Application.MainFormOnTaskbar := True;
+
+  fLogin := TfLogin.Create(Application);
+  try
+    if fLogin.ShowModal = mrOk then
+    begin
+      Application.CreateForm(TfrmPeliculas, frmPeliculas);
+      Application.Run;
+    end
+    else
+      Application.Terminate;
+  finally
+    fLogin.Free;
+  end;
+end.
