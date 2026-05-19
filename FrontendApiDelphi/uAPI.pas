@@ -8,17 +8,17 @@ uses
   System.JSON;
 
 const
-  BASE_URL = 'http://borjapau2026.fabricomiweb.com/';
+  BASE_URL = 'https://borjapau2026.fabricomiweb.com/';
 
 var
   sTokenJWT     : string; { Token JWT guardado tras el login    }
   sRolUsuario   : string; { Rol del usuario autenticado         }
   sNombreUsuario: string; { Username del usuario autenticado    }
 
-{ Autenticaci髇 }
+{ Autenticaci贸n }
 function LoginAPI(const sUsuario, sClave: string; out sMensaje: string): Boolean;
 
-{ CRUD gen閞ico
+{ CRUD gen茅rico
   IMPORTANTE: el caller es responsable de liberar los objetos JSON devueltos }
 function APIListar(const sEntidad: string; out jArray: TJSONArray; out sMensaje: string): Boolean;
 function APIVer   (const sEntidad: string; nID: Integer; out jObj: TJSONObject; out sMensaje: string): Boolean;
@@ -29,7 +29,7 @@ function APIBorrar(const sEntidad: string; nID: Integer; out sMensaje: string): 
 implementation
 
 { Ejecuta una llamada HTTP
-  - Devuelve el c骴igo de estado HTTP (0 = error de red/conexi髇)
+  - Devuelve el c贸digo de estado HTTP (0 = error de red/conexi贸n)
   - sRespuesta recibe el body de la respuesta como string }
 function EjecutarLlamada(const sMetodo, sURL, sBody: string; out sRespuesta: string): Integer;
 var
@@ -59,7 +59,7 @@ begin
       end
       else if sMetodo = 'GET'    then oResp := oHTTP.Get   (sURL)
       else if sMetodo = 'DELETE' then oResp := oHTTP.Delete(sURL)
-      else raise Exception.CreateFmt('M閠odo HTTP no soportado: %s', [sMetodo]);
+      else raise Exception.CreateFmt('M茅todo HTTP no soportado: %s', [sMetodo]);
 
       sRespuesta := oResp.ContentAsString(TEncoding.UTF8);
       Result     := oResp.StatusCode;
@@ -133,7 +133,7 @@ begin
   jResp := TJSONObject.ParseJSONValue(sResp);
   if not Assigned(jResp) then
   begin
-    sMensaje := 'Respuesta inv醠ida del servidor.';
+    sMensaje := 'Respuesta inv谩lida del servidor.';
     Exit;
   end;
 
@@ -172,7 +172,7 @@ begin
 
   if nCodigo = 0 then
   begin
-    sMensaje := 'Error de conexi髇: ' + sResp;
+    sMensaje := 'Error de conexi贸n: ' + sResp;
     Exit;
   end;
 
@@ -187,7 +187,7 @@ begin
     else
     begin
       FreeAndNil(jVal);
-      sMensaje := 'La respuesta no es un array JSON v醠ido.';
+      sMensaje := 'La respuesta no es un array JSON v谩lido.';
     end;
   end
   else
@@ -211,7 +211,7 @@ begin
 
   if nCodigo = 0 then
   begin
-    sMensaje := 'Error de conexi髇: ' + sResp;
+    sMensaje := 'Error de conexi贸n: ' + sResp;
     Exit;
   end;
 
@@ -226,7 +226,7 @@ begin
     else
     begin
       FreeAndNil(jVal);
-      sMensaje := 'La respuesta no es un objeto JSON v醠ido.';
+      sMensaje := 'La respuesta no es un objeto JSON v谩lido.';
     end;
   end
   else
@@ -244,7 +244,7 @@ begin
 
   nCodigo := EjecutarLlamada('POST', BASE_URL + sEntidad, jDatos.ToJSON, sResp);
 
-  if      nCodigo = 0             then sMensaje := 'Error de conexi髇: ' + sResp
+  if      nCodigo = 0             then sMensaje := 'Error de conexi贸n: ' + sResp
   else if nCodigo in [200, 201]   then Result   := True
   else                                 sMensaje := ExtraerMensajeError(sResp);
 end;
@@ -262,7 +262,7 @@ begin
   nCodigo := EjecutarLlamada('PUT',
     BASE_URL + sEntidad + '/' + IntToStr(nID), jDatos.ToJSON, sResp);
 
-  if      nCodigo = 0           then sMensaje := 'Error de conexi髇: ' + sResp
+  if      nCodigo = 0           then sMensaje := 'Error de conexi贸n: ' + sResp
   else if nCodigo in [200, 204] then Result   := True
   else                               sMensaje := ExtraerMensajeError(sResp);
 end;
@@ -280,7 +280,7 @@ begin
   nCodigo := EjecutarLlamada('DELETE',
     BASE_URL + sEntidad + '/' + IntToStr(nID), '', sResp);
 
-  if      nCodigo = 0           then sMensaje := 'Error de conexi髇: ' + sResp
+  if      nCodigo = 0           then sMensaje := 'Error de conexi贸n: ' + sResp
   else if nCodigo in [200, 204] then Result   := True
   else                               sMensaje := ExtraerMensajeError(sResp);
 end;
