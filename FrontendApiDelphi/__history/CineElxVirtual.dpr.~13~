@@ -1,0 +1,16 @@
+﻿program CineElxVirtual;
+
+uses
+  Vcl.Forms,
+  uPrincipal in 'uPrincipal.pas' {fPrincipal},
+  uLogin in 'uLogin.pas' {fLogin},
+  uAPI in 'uAPI.pas';
+
+{$R *.res}
+
+begin
+  Application.Initialize;
+  Application.MainFormOnTaskbar := True;
+  Application.CreateForm(TfPrincipal, fPrincipal);
+  Application.Run;
+end.

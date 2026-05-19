@@ -1,0 +1,25 @@
+﻿program CineElxVirtual;
+
+uses
+  Vcl.Forms,
+  System.UITypes,
+  uAPI in 'uAPI.pas',
+  uLogin in 'uLogin.pas' {fLogin};
+
+{$R *.res}
+
+
+begin
+  Application.Initialize;
+  Application.MainFormOnTaskbar := True;
+
+  fLogin := TfLogin.Create(Application);
+  try
+    if fLogin.ShowModal = mrOk then
+  Application.Terminate   // Termina la aplicación tras el login
+else
+  Application.Terminate;
+  finally
+    fLogin.Free;
+  end;
+end.

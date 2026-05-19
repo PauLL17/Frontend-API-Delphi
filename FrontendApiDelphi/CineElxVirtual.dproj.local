@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BorlandProject>
+	<Transactions>
+    <Transaction>2026/04/15 16:27:37.000.628,=C:\Users\borja\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
+    <Transaction>2026/05/18 16:41:49.000.002,=C:\Users\borja\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
+    <Transaction>2026/05/18 16:42:24.000.932,C:\Users\borja\Documents\Embarcadero\Studio\Projects\Unit1.pas=C:\Users\borja\Desktop\FrontendApiDelphi\Unit1.pas</Transaction>
+    <Transaction>2026/05/18 16:42:24.000.932,C:\Users\borja\Documents\Embarcadero\Studio\Projects\Unit1.dfm=C:\Users\borja\Desktop\FrontendApiDelphi\Unit1.dfm</Transaction>
+    <Transaction>2026/05/18 16:42:28.000.391,C:\Users\borja\Documents\Embarcadero\Studio\Projects\Project1.dproj=C:\Users\borja\Desktop\FrontendApiDelphi\Project1.dproj</Transaction>
+    <Transaction>2026/05/19 09:20:10.000.009,C:\Users\rambl\OneDrive\Desktop\FrontendApiDelphi\FrontendApiDelphi\Unit1.dfm=C:\Users\rambl\OneDrive\Desktop\FrontendApiDelphi\FrontendApiDelphi\uLogin.dfm</Transaction>
+    <Transaction>2026/05/19 09:20:10.000.009,C:\Users\rambl\OneDrive\Desktop\FrontendApiDelphi\FrontendApiDelphi\Unit1.pas=C:\Users\rambl\OneDrive\Desktop\FrontendApiDelphi\FrontendApiDelphi\uLogin.pas</Transaction>
+    <Transaction>2026/05/19 09:20:23.000.687,C:\Users\rambl\OneDrive\Desktop\FrontendApiDelphi\FrontendApiDelphi\Project1.dproj=C:\Users\rambl\OneDrive\Desktop\FrontendApiDelphi\FrontendApiDelphi\CineElxVirtual.dproj</Transaction>
+    <Transaction>2026/05/19 11:54:25.000.350,=C:\Users\borja\Desktop\Frontend-API-Delphi\FrontendApiDelphi\uAPI.pas</Transaction>
+    <Transaction>2026/05/19 11:54:33.000.302,=C:\Users\borja\Desktop\Frontend-API-Delphi\FrontendApiDelphi\Unit2.pas</Transaction>
+    <Transaction>2026/05/19 11:54:44.000.801,C:\Users\borja\Desktop\Frontend-API-Delphi\FrontendApiDelphi\uFrmPeliculas.pas=C:\Users\borja\Desktop\Frontend-API-Delphi\FrontendApiDelphi\Unit2.pas</Transaction>
+    <Transaction>2026/05/19 11:54:44.000.801,C:\Users\borja\Desktop\Frontend-API-Delphi\FrontendApiDelphi\uFrmPeliculas.dfm=C:\Users\borja\Desktop\Frontend-API-Delphi\FrontendApiDelphi\Unit2.dfm</Transaction>
+    <Transaction>2026/05/19 12:39:39.000.463,C:\Users\borja\Desktop\Frontend-API-Delphi\FrontendApiDelphi\uFrmPeliculas.pas=</Transaction>
+    <Transaction>2026/05/19 13:01:03.000.872,=C:\Users\rambl\OneDrive\Desktop\Frontend-API-Delphi\FrontendApiDelphi\Unit1.pas</Transaction>
+    <Transaction>2026/05/19 13:01:14.000.491,C:\Users\rambl\OneDrive\Desktop\Frontend-API-Delphi\FrontendApiDelphi\uPrincipal.dfm=C:\Users\rambl\OneDrive\Desktop\Frontend-API-Delphi\FrontendApiDelphi\Unit1.dfm</Transaction>
+    <Transaction>2026/05/19 13:01:14.000.491,C:\Users\rambl\OneDrive\Desktop\Frontend-API-Delphi\FrontendApiDelphi\uPrincipal.pas=C:\Users\rambl\OneDrive\Desktop\Frontend-API-Delphi\FrontendApiDelphi\Unit1.pas</Transaction>
+    <Transaction>2026/05/19 13:04:37.000.481,C:\Users\rambl\OneDrive\Desktop\Frontend-API-Delphi\FrontendApiDelphi\uPrincipal.pas=</Transaction>
+    <Transaction>2026/05/19 13:06:29.000.364,=C:\Users\rambl\OneDrive\Desktop\Frontend-API-Delphi\FrontendApiDelphi\Unit1.pas</Transaction>
+    <Transaction>2026/05/19 13:06:45.000.109,C:\Users\rambl\OneDrive\Desktop\Frontend-API-Delphi\FrontendApiDelphi\MainScreen.dfm=C:\Users\rambl\OneDrive\Desktop\Frontend-API-Delphi\FrontendApiDelphi\Unit1.dfm</Transaction>
+    <Transaction>2026/05/19 13:06:45.000.109,C:\Users\rambl\OneDrive\Desktop\Frontend-API-Delphi\FrontendApiDelphi\MainScreen.pas=C:\Users\rambl\OneDrive\Desktop\Frontend-API-Delphi\FrontendApiDelphi\Unit1.pas</Transaction>
+  </Transactions>
+</BorlandProject>

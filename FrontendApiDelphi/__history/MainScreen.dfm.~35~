@@ -1,0 +1,176 @@
+object Form1: TForm1
+  Left = 0
+  Top = 0
+  Caption = 'CineElxVirtual'
+  ClientHeight = 600
+  ClientWidth = 950
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -12
+  Font.Name = 'Segoe UI'
+  Font.Style = []
+  FormStyle = fsMDIForm
+  WindowState = wsMaximized
+  OnCreate = FormCreate
+  OnDestroy = FormDestroy
+  TextHeight = 15
+  object ActionMainMenuBar1: TActionMainMenuBar
+    Left = 0
+    Top = 0
+    Width = 950
+    Height = 26
+    UseSystemFont = False
+    ActionManager = ActionManager1
+    Color = clMenuBar
+    ColorMap.DisabledFontColor = 10461087
+    ColorMap.HighlightColor = clWhite
+    ColorMap.BtnSelectedFont = clBlack
+    ColorMap.UnusedColor = clWhite
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clBlack
+    Font.Height = -12
+    Font.Name = 'Segoe UI'
+    Font.Style = []
+    Spacing = 0
+    WindowMenu = 'oihoi'
+  end
+  object tbHorizontal: TActionToolBar
+    Left = 0
+    Top = 26
+    Width = 950
+    Height = 26
+    ActionManager = ActionManager1
+    Color = clMenuBar
+    ColorMap.DisabledFontColor = 10461087
+    ColorMap.HighlightColor = clWhite
+    ColorMap.BtnSelectedFont = clBlack
+    ColorMap.UnusedColor = clWhite
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clBlack
+    Font.Height = -12
+    Font.Name = 'Segoe UI'
+    Font.Style = []
+    ParentFont = False
+    Spacing = 0
+    ExplicitHeight = 25
+  end
+  object tbNavLateral: TActionToolBar
+    Left = 0
+    Top = 52
+    Width = 56
+    Height = 548
+    ActionManager = ActionManager1
+    Align = alLeft
+    Color = clMenuBar
+    ColorMap.DisabledFontColor = 10461087
+    ColorMap.HighlightColor = clWhite
+    ColorMap.BtnSelectedFont = clBlack
+    ColorMap.UnusedColor = clWhite
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clBlack
+    Font.Height = -12
+    Font.Name = 'Segoe UI'
+    Font.Style = []
+    ParentFont = False
+    Spacing = 0
+    ExplicitTop = 51
+    ExplicitHeight = 549
+  end
+  object ImageList1: TImageList
+    ColorDepth = cd16Bit
+    Left = 860
+    Top = 80
+  end
+  object ActionManager1: TActionManager
+    ActionBars = <
+      item
+        Items = <
+          item
+            Action = actSalas
+            Caption = '&Salas'
+          end
+          item
+            Action = actClientes
+            Caption = '&Clientes'
+          end
+          item
+            Action = actSesiones
+            Caption = 'S&esiones'
+          end
+          item
+            Action = actEntradas
+            Caption = 'E&ntradas'
+          end
+          item
+            Action = actSalir
+            Caption = 'S&alir'
+          end>
+        ActionBar = tbNavLateral
+      end
+      item
+        Items = <
+          item
+            Action = actPeliculas
+            Caption = '&Pel'#237'culas'
+            ImageIndex = 5
+          end
+          item
+            Action = actSalas
+            Caption = '&Salas'
+            ImageIndex = 3
+          end
+          item
+            Action = actClientes
+            Caption = '&Clientes'
+            ImageIndex = 2
+          end
+          item
+            Action = actSesiones
+            Caption = 'S&esiones'
+            ImageIndex = 4
+          end
+          item
+            Action = actEntradas
+            Caption = 'E&ntradas'
+            ImageIndex = 1
+          end>
+        ActionBar = tbHorizontal
+      end>
+    LargeImages = ImageList1
+    Images = ImageList1
+    Left = 860
+    Top = 140
+    StyleName = 'Platform Default'
+    object actPeliculas: TAction
+      Category = 'Navegaci'#243'n'
+      Caption = 'Pel'#237'culas'
+      OnExecute = actPeliculasExecute
+    end
+    object actSalas: TAction
+      Category = 'Navegaci'#243'n'
+      Caption = 'Salas'
+      OnExecute = actSalasExecute
+    end
+    object actClientes: TAction
+      Category = 'Navegaci'#243'n'
+      Caption = 'Clientes'
+      OnExecute = actClientesExecute
+    end
+    object actSesiones: TAction
+      Category = 'Navegaci'#243'n'
+      Caption = 'Sesiones'
+      OnExecute = actSesionesExecute
+    end
+    object actEntradas: TAction
+      Category = 'Navegaci'#243'n'
+      Caption = 'Entradas'
+      OnExecute = actEntradasExecute
+    end
+    object actSalir: TAction
+      Category = 'Aplicaci'#243'n'
+      Caption = 'Salir'
+      OnExecute = actSalirExecute
+    end
+  end
+end
