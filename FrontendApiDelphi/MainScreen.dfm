@@ -86,7 +86,15 @@ object Form1: TForm1
     HorzMargin = 10
     ParentFont = False
     Spacing = 0
-    ExplicitWidth = 177
+  end
+  object pnlCentral: TPanel
+    Left = 115
+    Top = 55
+    Width = 835
+    Height = 545
+    Align = alClient
+    BevelOuter = bvNone
+    TabOrder = 3
   end
   object ImageList1: TImageList
     ColorDepth = cd32Bit
@@ -502,26 +510,32 @@ object Form1: TForm1
         Items = <
           item
             Action = actPeliculas
+            Caption = '&Pel'#237'culas'
             ImageIndex = 7
           end
           item
             Action = actSalas
+            Caption = '&Salas'
             ImageIndex = 2
           end
           item
             Action = actSesiones
+            Caption = 'S&esiones'
             ImageIndex = 5
           end
           item
             Action = actEntradas
+            Caption = 'E&ntradas'
             ImageIndex = 4
           end
           item
             Action = actClientes
+            Caption = '&Clientes'
             ImageIndex = 3
           end
           item
             Action = actSalir
+            Caption = 'S&alir'
             ImageIndex = 1
           end>
         ActionBar = tbNavLateral

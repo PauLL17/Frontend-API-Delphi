@@ -7,13 +7,14 @@ uses
   System.Classes, Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs,
   System.Actions, Vcl.ActnList, Vcl.ActnMan, Vcl.ActnMenus, Vcl.ActnCtrls,
   Vcl.PlatformDefaultStyleActnCtrls, Vcl.ImgList, System.ImageList,
-  Vcl.ToolWin;
+  Vcl.ToolWin, Vcl.ExtCtrls;
 
 type
   TForm1 = class(TForm)
     ActionMainMenuBar1: TActionMainMenuBar;
     tbHorizontal: TActionToolBar;
     tbNavLateral: TActionToolBar;
+    pnlCentral: TPanel;
     ImageList1: TImageList;
     ActionManager1: TActionManager;
     actPeliculas: TAction;
@@ -30,7 +31,7 @@ type
     procedure actEntradasExecute(Sender: TObject);
     procedure actSalirExecute(Sender: TObject);
   private
-    { Private declarations }
+    procedure CargarFrame(AFrame: TFrame);
   public
     { Public declarations }
   end;
@@ -45,12 +46,24 @@ uses
 
 {$R *.dfm}
 
+{ CargarFrame
+    - Destruye cualquier frame que haya en pnlCentral
+    - Asigna el nuevo frame como hijo de pnlCentral
+    - Lo alinea para que ocupe todo el panel }
+procedure TForm1.CargarFrame(AFrame: TFrame);
+var
+  i: Integer;
+begin
+
+  for i := pnlCentral.ControlCount - 1 downto 0 do
+    pnlCentral.Controls[i].Free;
+
+  AFrame.Parent := pnlCentral;
+  AFrame.Align  := alClient;
+end;
+
 procedure TForm1.FormCreate(Sender: TObject);
 begin
-  { FormCreate de MainScreen
-    - Muestra fLogin como modal antes de mostrar el principal
-    - Si login correcto (mrOk): actualiza el caption con usuario y rol
-    - Si se cancela: termina la aplicación }
   fLogin := TfLogin.Create(Application);
   try
     if fLogin.ShowModal = mrOk then
@@ -64,27 +77,27 @@ end;
 
 procedure TForm1.actPeliculasExecute(Sender: TObject);
 begin
-  { TODO: abrir fPeliculas como MDI child }
+  {CargarFrame(TFrmPeliculas.Create(pnlCentral)) }
 end;
 
 procedure TForm1.actSalasExecute(Sender: TObject);
 begin
-  { TODO: abrir fSalas como MDI child }
+  {CargarFrame(TFrmSalas.Create(pnlCentral)) }
 end;
 
 procedure TForm1.actClientesExecute(Sender: TObject);
 begin
-  { TODO: abrir fClientes como MDI child }
+  {CargarFrame(TFrmClientes.Create(pnlCentral)) }
 end;
 
 procedure TForm1.actSesionesExecute(Sender: TObject);
 begin
-  { TODO: abrir fSesiones como MDI child }
+  {CargarFrame(TFrmSesiones.Create(pnlCentral)) }
 end;
 
 procedure TForm1.actEntradasExecute(Sender: TObject);
 begin
-  { TODO: abrir fEntradas como MDI child }
+  {CargarFrame(TFrmEntradas.Create(pnlCentral)) }
 end;
 
 procedure TForm1.actSalirExecute(Sender: TObject);
