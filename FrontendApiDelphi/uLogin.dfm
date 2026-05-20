@@ -3,8 +3,8 @@ object fLogin: TfLogin
   Top = 0
   BorderStyle = bsDialog
   Caption = 'CineElxVirtual'
-  ClientHeight = 200
-  ClientWidth = 310
+  ClientHeight = 223
+  ClientWidth = 343
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -30,7 +30,7 @@ object fLogin: TfLogin
   object pnlTitulo: TPanel
     Left = 0
     Top = 0
-    Width = 310
+    Width = 343
     Height = 45
     Align = alTop
     BevelOuter = bvNone
@@ -44,6 +44,7 @@ object fLogin: TfLogin
     ParentBackground = False
     ParentFont = False
     TabOrder = 3
+    ExplicitWidth = 310
   end
   object edtUsuario: TEdit
     Left = 110
@@ -69,5 +70,33 @@ object fLogin: TfLogin
     Default = True
     TabOrder = 2
     OnClick = btnAceptarClick
+  end
+  object RESTClient1: TRESTClient
+    BaseURL = 'https://borjapau2026.fabricomiweb.com'
+    Params = <>
+    SynchronizedEvents = False
+    Left = 296
+    Top = 48
+  end
+  object RESTRequest1: TRESTRequest
+    AssignedValues = [rvConnectTimeout, rvReadTimeout]
+    Client = RESTClient1
+    Method = rmPOST
+    Params = <
+      item
+        Kind = pkREQUESTBODY
+        Name = 'body6BFF7C5C278C48808BACF3605D39CFFF'
+        Value = '{'#13#10'    "username": "pau",'#13#10'    "password": "1234"'#13#10'}'
+        ContentTypeStr = 'application/json'
+      end>
+    Resource = 'Login'
+    Response = RESTResponse1
+    SynchronizedEvents = False
+    Left = 288
+    Top = 152
+  end
+  object RESTResponse1: TRESTResponse
+    Left = 288
+    Top = 96
   end
 end
