@@ -42,7 +42,7 @@ var
 implementation
 
 uses
-  uLogin, uAPI;
+  uLogin, uAPI, uFrmPeliculas, uFrmSalas, uFrmClientes;
 
 {$R *.dfm}
 
@@ -77,17 +77,20 @@ end;
 
 procedure TForm1.actPeliculasExecute(Sender: TObject);
 begin
-  {CargarFrame(TFrmPeliculas.Create(pnlCentral)) }
+  { Carga el frame de Películas en el panel central }
+  CargarFrame(TFrame1.Create(pnlCentral));
 end;
 
 procedure TForm1.actSalasExecute(Sender: TObject);
 begin
-  {CargarFrame(TFrmSalas.Create(pnlCentral)) }
+  { Carga el frame de Salas en el panel central }
+  CargarFrame(TFrame2.Create(pnlCentral));
 end;
 
 procedure TForm1.actClientesExecute(Sender: TObject);
 begin
-  {CargarFrame(TFrmClientes.Create(pnlCentral)) }
+  { Carga el frame de Clientes en el panel central }
+  CargarFrame(TFrame3.Create(pnlCentral));
 end;
 
 procedure TForm1.actSesionesExecute(Sender: TObject);
