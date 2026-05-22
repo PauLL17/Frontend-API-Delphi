@@ -19,7 +19,7 @@ object Frame1: TFrame1
       Top = 12
       Width = 110
       Height = 15
-      Caption = 'Gesti'#243'n de Pel'#237'culas'
+      Caption = 'Gestion de Peliculas'
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWhite
       Font.Height = -12
@@ -60,28 +60,26 @@ object Frame1: TFrame1
     Align = alTop
     BevelOuter = bvNone
     TabOrder = 2
-    ExplicitLeft = -8
-    ExplicitTop = 180
     object lblTituloF: TLabel
       Left = 10
       Top = 15
       Width = 31
       Height = 15
-      Caption = 'T'#237'tulo'
+      Caption = 'Titulo'
     end
     object lblDuracion: TLabel
       Left = 10
       Top = 50
       Width = 48
       Height = 15
-      Caption = 'Duraci'#243'n'
+      Caption = 'Duracion'
     end
     object lblGenero: TLabel
       Left = 10
       Top = 85
       Width = 41
       Height = 15
-      Caption = 'G'#233'nero:'
+      Caption = 'Genero:'
     end
     object DBEdtTitulo: TDBEdit
       Left = 100
