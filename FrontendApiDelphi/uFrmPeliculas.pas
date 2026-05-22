@@ -33,6 +33,7 @@ type
     RESTResponse1: TRESTResponse;
     procedure FDMemTable1AfterPost(DataSet: TDataSet);
     procedure FDMemTable1BeforeDelete(DataSet: TDataSet);
+    procedure FDMemTable1AfterRefresh(DataSet: TDataSet);
   private
     procedure CargarDatos;
   public
@@ -131,7 +132,6 @@ var
   jDatos : TJSONObject;
   nID    : Integer;
 begin
-  ShowMessage('AfterPost disparado');
   nID := DataSet.FieldByName('id_pelicula').AsInteger;
 
   jDatos := TJSONObject.Create;
@@ -158,7 +158,6 @@ begin
     end;
 
     RESTRequest1.Execute;
-    ShowMessage('Status: ' + IntToStr(RESTResponse1.StatusCode) + ' - ' + RESTResponse1.Content);
 
     if RESTResponse1.StatusCode in [200, 201] then
     begin
@@ -210,6 +209,11 @@ begin
   end
   else
     ShowMessage('Pelicula eliminada correctamente.');
+end;
+
+procedure TFrame1.FDMemTable1AfterRefresh(DataSet: TDataSet);
+begin
+  CargarDatos;
 end;
 
 end.

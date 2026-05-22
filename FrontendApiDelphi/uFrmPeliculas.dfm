@@ -127,6 +127,7 @@ object Frame1: TFrame1
   object FDMemTable1: TFDMemTable
     AfterPost = FDMemTable1AfterPost
     BeforeDelete = FDMemTable1BeforeDelete
+    AfterRefresh = FDMemTable1AfterRefresh
     FetchOptions.AssignedValues = [evMode]
     FetchOptions.Mode = fmAll
     ResourceOptions.AssignedValues = [rvSilentMode]
