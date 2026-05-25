@@ -34,7 +34,11 @@ type
     procedure FDMemTable1AfterPost(DataSet: TDataSet);
     procedure FDMemTable1BeforeDelete(DataSet: TDataSet);
     procedure FDMemTable1AfterRefresh(DataSet: TDataSet);
+    procedure FDMemTable1BeforeEdit(DataSet: TDataSet);
   private
+    sOrigTitulo  : string;
+    nOrigDuracion: Integer;
+    sOrigGenero  : string;
     procedure CargarDatos;
   public
     constructor Create(AOwner: TComponent); override;
@@ -127,50 +131,70 @@ begin
   end;
 end;
 
+procedure TFrame1.FDMemTable1BeforeEdit(DataSet: TDataSet);
+begin
+  sOrigTitulo   := DataSet.FieldByName('titulo').AsString;
+  nOrigDuracion := DataSet.FieldByName('duracion').AsInteger;
+  sOrigGenero   := DataSet.FieldByName('genero').AsString;
+end;
+
 procedure TFrame1.FDMemTable1AfterPost(DataSet: TDataSet);
 var
   jDatos : TJSONObject;
   nID    : Integer;
 begin
-  nID := DataSet.FieldByName('id_pelicula').AsInteger;
-
+  nID    := DataSet.FieldByName('id_pelicula').AsInteger;
   jDatos := TJSONObject.Create;
   try
-    jDatos.AddPair('titulo',   DataSet.FieldByName('titulo').AsString);
-    jDatos.AddPair('duracion', DataSet.FieldByName('duracion').AsString);
-    jDatos.AddPair('genero',   DataSet.FieldByName('genero').AsString);
-
-    RESTRequest1.Params.Clear;
-    RESTRequest1.ClearBody;
-    RESTRequest1.AddParameter('Authorization', 'Bearer ' + sTokenJWT,
-                               pkHTTPHEADER, [poDoNotEncode]);
-    RESTRequest1.AddBody(jDatos.ToJSON, TRESTContentType.ctAPPLICATION_JSON);
-
     if nID = 0 then
     begin
+      jDatos.AddPair('titulo',   DataSet.FieldByName('titulo').AsString);
+      jDatos.AddPair('duracion', DataSet.FieldByName('duracion').AsString);
+      jDatos.AddPair('genero',   DataSet.FieldByName('genero').AsString);
+
+      RESTRequest1.Params.Clear;
+      RESTRequest1.ClearBody;
+      RESTRequest1.AddParameter('Authorization', 'Bearer ' + sTokenJWT,
+                                 pkHTTPHEADER, [poDoNotEncode]);
+      RESTRequest1.AddBody(jDatos.ToJSON, TRESTContentType.ctAPPLICATION_JSON);
       RESTRequest1.Method   := rmPOST;
       RESTRequest1.Resource := 'Peliculas';
-    end
-    else
-    begin
-      RESTRequest1.Method   := rmPUT;
-      RESTRequest1.Resource := 'Peliculas/' + IntToStr(nID);
-    end;
+      RESTRequest1.Execute;
 
-    RESTRequest1.Execute;
-
-    if RESTResponse1.StatusCode in [200, 201] then
-    begin
-      if nID = 0 then
+      if RESTResponse1.StatusCode in [200, 201] then
       begin
-        ShowMessage('Pelicula creada correctamente.');
+        ShowMessage('Película creada correctamente.');
         CargarDatos;
       end
       else
-        ShowMessage('Pelicula actualizada correctamente.');
+        ShowMessage('Error al crear: ' + RESTResponse1.Content);
     end
     else
-      ShowMessage('Error al guardar: ' + RESTResponse1.Content);
+    begin
+      if DataSet.FieldByName('titulo').AsString <> sOrigTitulo then
+        jDatos.AddPair('titulo', DataSet.FieldByName('titulo').AsString);
+      if DataSet.FieldByName('duracion').AsInteger <> nOrigDuracion then
+        jDatos.AddPair('duracion', DataSet.FieldByName('duracion').AsString);
+      if DataSet.FieldByName('genero').AsString <> sOrigGenero then
+        jDatos.AddPair('genero', DataSet.FieldByName('genero').AsString);
+
+      if jDatos.Count > 0 then
+      begin
+        RESTRequest1.Params.Clear;
+        RESTRequest1.ClearBody;
+        RESTRequest1.AddParameter('Authorization', 'Bearer ' + sTokenJWT,
+                                   pkHTTPHEADER, [poDoNotEncode]);
+        RESTRequest1.AddBody(jDatos.ToJSON, TRESTContentType.ctAPPLICATION_JSON);
+        RESTRequest1.Method   := rmPATCH;
+        RESTRequest1.Resource := 'Peliculas/' + IntToStr(nID);
+        RESTRequest1.Execute;
+
+        if RESTResponse1.StatusCode in [200, 201] then
+          ShowMessage('Película actualizada correctamente.')
+        else
+          ShowMessage('Error al actualizar: ' + RESTResponse1.Content);
+      end;
+    end;
   finally
     jDatos.Free;
   end;

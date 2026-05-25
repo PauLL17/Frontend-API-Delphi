@@ -125,6 +125,7 @@ object Frame1: TFrame1
     TitleFont.Style = []
   end
   object FDMemTable1: TFDMemTable
+    BeforeEdit = FDMemTable1BeforeEdit
     AfterPost = FDMemTable1AfterPost
     BeforeDelete = FDMemTable1BeforeDelete
     AfterRefresh = FDMemTable1AfterRefresh
