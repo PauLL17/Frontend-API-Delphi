@@ -99,12 +99,12 @@ begin
 
   fNombreCliente := TStringField.Create(FDMemTable1);
   fNombreCliente.FieldName := 'nombre_cliente';
-  fNombreCliente.Size      := 200;
+  fNombreCliente.Size      := 50;
   fNombreCliente.DataSet   := FDMemTable1;
 
   fTituloPelicula := TStringField.Create(FDMemTable1);
   fTituloPelicula.FieldName := 'titulo_pelicula';
-  fTituloPelicula.Size      := 200;
+  fTituloPelicula.Size      := 50;
   fTituloPelicula.DataSet   := FDMemTable1;
 
   fFechaHoraSesion := TStringField.Create(FDMemTable1);

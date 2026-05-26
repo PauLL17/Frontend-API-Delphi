@@ -66,7 +66,7 @@ begin
 
   fTitulo := TStringField.Create(FDMemTable1);
   fTitulo.FieldName := 'titulo';
-  fTitulo.Size      := 200;
+  fTitulo.Size      := 50;
   fTitulo.DataSet   := FDMemTable1;
 
   fDuracion := TIntegerField.Create(FDMemTable1);
@@ -75,7 +75,7 @@ begin
 
   fGenero := TStringField.Create(FDMemTable1);
   fGenero.FieldName := 'genero';
-  fGenero.Size      := 100;
+  fGenero.Size      := 25;
   fGenero.DataSet   := FDMemTable1;
 
   FDMemTable1.CreateDataSet;

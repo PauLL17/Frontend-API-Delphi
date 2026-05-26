@@ -95,12 +95,12 @@ begin
 
   fTituloPelicula := TStringField.Create(FDMemTable1);
   fTituloPelicula.FieldName := 'titulo_pelicula';
-  fTituloPelicula.Size      := 200;
+  fTituloPelicula.Size      := 50;
   fTituloPelicula.DataSet   := FDMemTable1;
 
   fNombreSala := TStringField.Create(FDMemTable1);
   fNombreSala.FieldName := 'nombre_sala';
-  fNombreSala.Size      := 100;
+  fNombreSala.Size      := 50;
   fNombreSala.DataSet   := FDMemTable1;
 
   FDMemTable1.CreateDataSet;

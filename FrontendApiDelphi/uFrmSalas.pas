@@ -62,7 +62,7 @@ begin
 
   fNombre := TStringField.Create(FDMemTable1);
   fNombre.FieldName := 'nombre';
-  fNombre.Size      := 100;
+  fNombre.Size      := 20;
   fNombre.DataSet   := FDMemTable1;
 
   fCapacidad := TIntegerField.Create(FDMemTable1);
