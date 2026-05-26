@@ -6,11 +6,13 @@ uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants,
   System.Classes, Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs,
   Vcl.StdCtrls, Vcl.ExtCtrls, Vcl.DBCtrls, Vcl.DBGrids, Vcl.Mask,
-  Data.DB, FireDAC.Comp.Client, FireDAC.Stan.Intf, FireDAC.Stan.Option,
+  Data.DB, FireDAC.Comp.Client, FireDAC.Stan.Intf,
   FireDAC.Stan.Param, FireDAC.Stan.Error, FireDAC.DatS, FireDAC.Phys.Intf,
   FireDAC.DApt.Intf, FireDAC.Comp.DataSet,
-  REST.Client, REST.Types, System.JSON, Data.Bind.Components,
-  Data.Bind.ObjectScope, Vcl.Grids, Vcl.Buttons, Vcl.ComCtrls, System.DateUtils;
+  REST.Client, REST.Types, System.JSON,
+  Vcl.ComCtrls, System.DateUtils, System.Generics.Collections,
+  FireDAC.Stan.Option, Data.Bind.Components, Data.Bind.ObjectScope, Vcl.Grids,
+  Vcl.Buttons;
 
 type
   TFrame4 = class(TFrame)
@@ -42,11 +44,12 @@ type
     procedure FDMemTable1AfterInsert(DataSet: TDataSet);
     procedure FDMemTable1BeforePost(DataSet: TDataSet);
   private
-    nOrigPelicula : Integer;
-    nOrigSala     : Integer;
-    sOrigFecha    : string;
+    nOrigPelicula    : Integer;
+    nOrigSala        : Integer;
+    sOrigFecha       : string;
     FUpdatingControls: Boolean;
     procedure CargarDatos;
+    procedure CargarDiccionarios(out DictPeliculas, DictSalas: TDictionary<Integer, string>);
     procedure ActualizarDateTimePickers;
     procedure GuardarFechaEnDataset;
     function TryISO8601ToDateTime(const s: string; out dt: TDateTime): Boolean;
@@ -64,10 +67,12 @@ uses
 
 constructor TFrame4.Create(AOwner: TComponent);
 var
-  fId        : TIntegerField;
-  fPelicula  : TIntegerField;
-  fSala      : TIntegerField;
-  fFechaHora : TStringField;
+  fId             : TIntegerField;
+  fPelicula       : TIntegerField;
+  fSala           : TIntegerField;
+  fFechaHora      : TStringField;
+  fTituloPelicula : TStringField;
+  fNombreSala     : TStringField;
 begin
   inherited Create(AOwner);
 
@@ -88,24 +93,149 @@ begin
   fFechaHora.Size      := 30;
   fFechaHora.DataSet   := FDMemTable1;
 
+  fTituloPelicula := TStringField.Create(FDMemTable1);
+  fTituloPelicula.FieldName := 'titulo_pelicula';
+  fTituloPelicula.Size      := 200;
+  fTituloPelicula.DataSet   := FDMemTable1;
+
+  fNombreSala := TStringField.Create(FDMemTable1);
+  fNombreSala.FieldName := 'nombre_sala';
+  fNombreSala.Size      := 100;
+  fNombreSala.DataSet   := FDMemTable1;
+
   FDMemTable1.CreateDataSet;
 
-  dtpFecha.Kind := dtkDate;
-  dtpHora.Kind  := dtkTime;
+  dtpFecha.Kind  := dtkDate;
+  dtpHora.Kind   := dtkTime;
   dtpHora.Format := 'HH:mm:ss';
 
   FUpdatingControls := False;
 
-  // Asignación de eventos
-  FDMemTable1.BeforeEdit := FDMemTable1BeforeEdit;
-  FDMemTable1.BeforePost := FDMemTable1BeforePost;
-  FDMemTable1.AfterInsert := FDMemTable1AfterInsert;
+  FDMemTable1.BeforeEdit   := FDMemTable1BeforeEdit;
+  FDMemTable1.BeforePost   := FDMemTable1BeforePost;
+  FDMemTable1.AfterInsert  := FDMemTable1AfterInsert;
   DataSource1.OnDataChange := DataSource1DataChange;
 
   CargarDatos;
 end;
 
-// Convierte texto ISO (yyyy-mm-dd hh:nn:ss) a TDateTime
+procedure TFrame4.CargarDiccionarios(out DictPeliculas, DictSalas: TDictionary<Integer, string>);
+var
+  jArray : TJSONArray;
+  jObj   : TJSONObject;
+  i      : Integer;
+begin
+  DictPeliculas := TDictionary<Integer, string>.Create;
+  DictSalas     := TDictionary<Integer, string>.Create;
+
+  RESTRequest1.Params.Clear;
+  RESTRequest1.Method   := rmGET;
+  RESTRequest1.Resource := 'Peliculas';
+  RESTRequest1.AddParameter('Authorization', 'Bearer ' + sTokenJWT,
+                             pkHTTPHEADER, [poDoNotEncode]);
+  RESTRequest1.Execute;
+  if RESTResponse1.StatusCode = 200 then
+  begin
+    jArray := RESTResponse1.JSONValue as TJSONArray;
+    if Assigned(jArray) then
+      for i := 0 to jArray.Count - 1 do
+      begin
+        jObj := jArray.Items[i] as TJSONObject;
+        DictPeliculas.AddOrSetValue(
+          StrToIntDef(jObj.GetValue<string>('id_pelicula'), 0),
+          jObj.GetValue<string>('titulo'));
+      end;
+  end;
+
+  RESTRequest1.Params.Clear;
+  RESTRequest1.Method   := rmGET;
+  RESTRequest1.Resource := 'Salas';
+  RESTRequest1.AddParameter('Authorization', 'Bearer ' + sTokenJWT,
+                             pkHTTPHEADER, [poDoNotEncode]);
+  RESTRequest1.Execute;
+  if RESTResponse1.StatusCode = 200 then
+  begin
+    jArray := RESTResponse1.JSONValue as TJSONArray;
+    if Assigned(jArray) then
+      for i := 0 to jArray.Count - 1 do
+      begin
+        jObj := jArray.Items[i] as TJSONObject;
+        DictSalas.AddOrSetValue(
+          StrToIntDef(jObj.GetValue<string>('id_sala'), 0),
+          jObj.GetValue<string>('nombre'));
+      end;
+  end;
+end;
+
+procedure TFrame4.CargarDatos;
+var
+  jArray        : TJSONArray;
+  jObj          : TJSONObject;
+  i             : Integer;
+  DictPeliculas : TDictionary<Integer, string>;
+  DictSalas     : TDictionary<Integer, string>;
+  sTitulo       : string;
+  sNombreSala   : string;
+  nIdPelicula   : Integer;
+  nIdSala       : Integer;
+begin
+  CargarDiccionarios(DictPeliculas, DictSalas);
+  try
+    RESTRequest1.Params.Clear;
+    RESTRequest1.Method   := rmGET;
+    RESTRequest1.Resource := 'Sesiones';
+    RESTRequest1.AddParameter('Authorization', 'Bearer ' + sTokenJWT,
+                               pkHTTPHEADER, [poDoNotEncode]);
+    RESTRequest1.Execute;
+
+    if RESTResponse1.StatusCode <> 200 then
+    begin
+      ShowMessage('Error al cargar sesiones: ' + RESTResponse1.Content);
+      Exit;
+    end;
+
+    FDMemTable1.DisableControls;
+    FDMemTable1.AfterPost := nil;
+    try
+      FDMemTable1.EmptyDataSet;
+      jArray := RESTResponse1.JSONValue as TJSONArray;
+      if not Assigned(jArray) then Exit;
+
+      for i := 0 to jArray.Count - 1 do
+      begin
+        jObj        := jArray.Items[i] as TJSONObject;
+        nIdPelicula := StrToIntDef(jObj.GetValue<string>('id_pelicula'), 0);
+        nIdSala     := StrToIntDef(jObj.GetValue<string>('id_sala'), 0);
+
+        if not DictPeliculas.TryGetValue(nIdPelicula, sTitulo) then
+          sTitulo := '';
+        if not DictSalas.TryGetValue(nIdSala, sNombreSala) then
+          sNombreSala := '';
+
+        FDMemTable1.Append;
+        FDMemTable1.FieldByName('id_sesion').AsInteger   := StrToIntDef(jObj.GetValue<string>('id_sesion'), 0);
+        FDMemTable1.FieldByName('id_pelicula').AsInteger := nIdPelicula;
+        FDMemTable1.FieldByName('id_sala').AsInteger     := nIdSala;
+        FDMemTable1.FieldByName('fecha_hora').AsString   := jObj.GetValue<string>('fecha_hora');
+        FDMemTable1.FieldByName('titulo_pelicula').AsString := sTitulo;
+        FDMemTable1.FieldByName('nombre_sala').AsString     := sNombreSala;
+        FDMemTable1.Post;
+      end;
+
+      if FDMemTable1.RecordCount > 0 then
+        FDMemTable1.First;
+    finally
+      FDMemTable1.AfterPost := FDMemTable1AfterPost;
+      FDMemTable1.EnableControls;
+    end;
+
+    DataSource1DataChange(nil, nil);
+  finally
+    DictPeliculas.Free;
+    DictSalas.Free;
+  end;
+end;
+
 function TFrame4.TryISO8601ToDateTime(const s: string; out dt: TDateTime): Boolean;
 var
   y, m, d, h, n, sec: Word;
@@ -116,15 +246,15 @@ begin
   begin
     sDate := Copy(s, 1, 10);
     sTime := Copy(s, 12, 8);
-    y := StrToIntDef(Copy(sDate,1,4), 0);
-    m := StrToIntDef(Copy(sDate,6,2), 0);
-    d := StrToIntDef(Copy(sDate,9,2), 0);
-    h := StrToIntDef(Copy(sTime,1,2), 0);
-    n := StrToIntDef(Copy(sTime,4,2), 0);
-    sec := StrToIntDef(Copy(sTime,7,2), 0);
-    if (y>0) and (m>0) and (d>0) then
+    y   := StrToIntDef(Copy(sDate, 1, 4), 0);
+    m   := StrToIntDef(Copy(sDate, 6, 2), 0);
+    d   := StrToIntDef(Copy(sDate, 9, 2), 0);
+    h   := StrToIntDef(Copy(sTime, 1, 2), 0);
+    n   := StrToIntDef(Copy(sTime, 4, 2), 0);
+    sec := StrToIntDef(Copy(sTime, 7, 2), 0);
+    if (y > 0) and (m > 0) and (d > 0) then
     begin
-      dt := EncodeDateTime(y, m, d, h, n, sec, 0);
+      dt     := EncodeDateTime(y, m, d, h, n, sec, 0);
       Result := True;
     end;
   end;
@@ -135,14 +265,13 @@ begin
   Result := FormatDateTime('yyyy-mm-dd HH:nn:ss', dt);
 end;
 
-// Actualiza los DateTimePickers según el valor actual del dataset
 procedure TFrame4.ActualizarDateTimePickers;
 var
   sFecha: string;
-  dt: TDateTime;
+  dt    : TDateTime;
 begin
   if FUpdatingControls then Exit;
-  if FDMemTable1.Active and (not FDMemTable1.IsEmpty) then
+  if FDMemTable1.Active and not FDMemTable1.IsEmpty then
   begin
     sFecha := FDMemTable1.FieldByName('fecha_hora').AsString;
     if TryISO8601ToDateTime(sFecha, dt) then
@@ -158,7 +287,6 @@ begin
   end;
 end;
 
-// Guarda la combinación de fecha y hora de los pickers en el dataset
 procedure TFrame4.GuardarFechaEnDataset;
 var
   dt: TDateTime;
@@ -168,7 +296,6 @@ begin
   FDMemTable1.FieldByName('fecha_hora').AsString := DateTimeToISO8601(dt);
 end;
 
-// Cuando el usuario cambia la fecha en el picker
 procedure TFrame4.dtpFechaChange(Sender: TObject);
 begin
   if FUpdatingControls then Exit;
@@ -177,7 +304,6 @@ begin
   GuardarFechaEnDataset;
 end;
 
-// Cuando el usuario cambia la hora en el picker
 procedure TFrame4.dtpHoraChange(Sender: TObject);
 begin
   if FUpdatingControls then Exit;
@@ -186,7 +312,6 @@ begin
   GuardarFechaEnDataset;
 end;
 
-// Al cambiar de registro (navegación), actualizamos los valores originales y los pickers
 procedure TFrame4.DataSource1DataChange(Sender: TObject; Field: TField);
 begin
   if FDMemTable1.Active and not FDMemTable1.IsEmpty then
@@ -198,7 +323,6 @@ begin
   ActualizarDateTimePickers;
 end;
 
-// Antes de entrar en modo edición, volvemos a guardar los valores originales
 procedure TFrame4.FDMemTable1BeforeEdit(DataSet: TDataSet);
 begin
   nOrigPelicula := DataSet.FieldByName('id_pelicula').AsInteger;
@@ -207,37 +331,29 @@ begin
   ActualizarDateTimePickers;
 end;
 
-// Al insertar un nuevo registro, asignamos fecha/hora actual por defecto
 procedure TFrame4.FDMemTable1AfterInsert(DataSet: TDataSet);
 begin
   dtpFecha.Date := Date;
   dtpHora.Time  := Time;
-  GuardarFechaEnDataset;  // Esto escribe en el campo fecha_hora del nuevo registro
+  GuardarFechaEnDataset;
 end;
 
-// Antes de publicar (Post), solo para nuevos registros aseguramos la fecha/hora
 procedure TFrame4.FDMemTable1BeforePost(DataSet: TDataSet);
 begin
-  // Si es un registro nuevo, garantizar que tenga fecha_hora (ya se asignó en AfterInsert,
-  // pero por si acaso lo repetimos)
   if DataSet.FieldByName('id_sesion').AsInteger = 0 then
     GuardarFechaEnDataset;
-  // Para registros existentes, NO tocamos el campo fecha_hora, ya sea que haya sido
-  // modificado por los pickers o se haya quedado con el valor original.
 end;
 
-// Después de publicar, enviamos los datos al servidor (POST o PATCH)
 procedure TFrame4.FDMemTable1AfterPost(DataSet: TDataSet);
 var
-  jDatos : TJSONObject;
-  nID    : Integer;
+  jDatos: TJSONObject;
+  nID   : Integer;
 begin
-  nID := DataSet.FieldByName('id_sesion').AsInteger;
+  nID    := DataSet.FieldByName('id_sesion').AsInteger;
   jDatos := TJSONObject.Create;
   try
     if nID = 0 then
     begin
-      // Nuevo registro: enviar todos los campos
       jDatos.AddPair('id_pelicula', DataSet.FieldByName('id_pelicula').AsString);
       jDatos.AddPair('id_sala',     DataSet.FieldByName('id_sala').AsString);
       jDatos.AddPair('fecha_hora',  DataSet.FieldByName('fecha_hora').AsString);
@@ -253,15 +369,14 @@ begin
 
       if RESTResponse1.StatusCode in [200, 201] then
       begin
-        ShowMessage('Sesión creada correctamente.');
-        CargarDatos;  // Recargar para obtener el ID asignado
+        ShowMessage('Sesion creada correctamente.');
+        CargarDatos;
       end
       else
         ShowMessage('Error al crear: ' + RESTResponse1.Content);
     end
     else
     begin
-      // Actualización: solo incluir campos que hayan cambiado
       if DataSet.FieldByName('id_pelicula').AsInteger <> nOrigPelicula then
         jDatos.AddPair('id_pelicula', DataSet.FieldByName('id_pelicula').AsString);
       if DataSet.FieldByName('id_sala').AsInteger <> nOrigSala then
@@ -281,7 +396,7 @@ begin
         RESTRequest1.Execute;
 
         if RESTResponse1.StatusCode in [200, 201] then
-          ShowMessage('Sesión actualizada correctamente.')
+          ShowMessage('Sesion actualizada correctamente.')
         else
           ShowMessage('Error al actualizar: ' + RESTResponse1.Content);
       end;
@@ -291,7 +406,6 @@ begin
   end;
 end;
 
-// Eliminar una sesión
 procedure TFrame4.FDMemTable1BeforeDelete(DataSet: TDataSet);
 var
   nID: Integer;
@@ -304,7 +418,7 @@ begin
     Exit;
   end;
 
-  if MessageDlg('¿Seguro que quieres eliminar esta sesión?',
+  if MessageDlg('Seguro que quieres eliminar esta sesion?',
                 mtConfirmation, [mbYes, mbNo], 0) <> mrYes then
   begin
     Abort;
@@ -324,65 +438,12 @@ begin
     Abort;
   end
   else
-    ShowMessage('Sesión eliminada correctamente.');
+    ShowMessage('Sesion eliminada correctamente.');
 end;
 
-// Refrescar datos (por ejemplo, después de un POST externo)
 procedure TFrame4.FDMemTable1AfterRefresh(DataSet: TDataSet);
 begin
   CargarDatos;
-end;
-
-// Carga los datos desde el servidor
-procedure TFrame4.CargarDatos;
-var
-  jArray : TJSONArray;
-  jObj   : TJSONObject;
-  i      : Integer;
-begin
-  RESTRequest1.Params.Clear;
-  RESTRequest1.Method   := rmGET;
-  RESTRequest1.Resource := 'Sesiones';
-  RESTRequest1.AddParameter('Authorization', 'Bearer ' + sTokenJWT,
-                             pkHTTPHEADER, [poDoNotEncode]);
-  RESTRequest1.Execute;
-
-  if RESTResponse1.StatusCode <> 200 then
-  begin
-    ShowMessage('Error al cargar sesiones: ' + RESTResponse1.Content);
-    Exit;
-  end;
-
-  FDMemTable1.DisableControls;
-  FDMemTable1.AfterPost := nil;
-  try
-    FDMemTable1.EmptyDataSet;
-    jArray := RESTResponse1.JSONValue as TJSONArray;
-    if not Assigned(jArray) then Exit;
-
-    for i := 0 to jArray.Count - 1 do
-    begin
-      jObj := jArray.Items[i] as TJSONObject;
-      FDMemTable1.Append;
-      FDMemTable1.FieldByName('id_sesion').AsInteger :=
-        StrToIntDef(jObj.GetValue<string>('id_sesion'), 0);
-      FDMemTable1.FieldByName('id_pelicula').AsInteger :=
-        StrToIntDef(jObj.GetValue<string>('id_pelicula'), 0);
-      FDMemTable1.FieldByName('id_sala').AsInteger :=
-        StrToIntDef(jObj.GetValue<string>('id_sala'), 0);
-      FDMemTable1.FieldByName('fecha_hora').AsString :=
-        jObj.GetValue<string>('fecha_hora');
-      FDMemTable1.Post;
-    end;
-
-    if FDMemTable1.RecordCount > 0 then
-      FDMemTable1.First;
-  finally
-    FDMemTable1.AfterPost := FDMemTable1AfterPost;
-    FDMemTable1.EnableControls;
-  end;
-  // Actualizar los pickers y los valores originales
-  DataSource1DataChange(nil, nil);
 end;
 
 end.
