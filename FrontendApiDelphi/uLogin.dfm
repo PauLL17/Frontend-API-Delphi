@@ -3,8 +3,8 @@ object fLogin: TfLogin
   Top = 0
   BorderStyle = bsDialog
   Caption = 'CineElxVirtual'
-  ClientHeight = 223
-  ClientWidth = 343
+  ClientHeight = 290
+  ClientWidth = 370
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -13,28 +13,14 @@ object fLogin: TfLogin
   Font.Style = []
   Position = poScreenCenter
   TextHeight = 15
-  object lblUsuario: TLabel
-    Left = 30
-    Top = 72
-    Width = 43
-    Height = 15
-    Caption = 'Usuario:'
-  end
-  object lblClave: TLabel
-    Left = 30
-    Top = 107
-    Width = 32
-    Height = 15
-    Caption = 'Clave:'
-  end
   object pnlTitulo: TPanel
     Left = 0
     Top = 0
-    Width = 343
+    Width = 370
     Height = 45
     Align = alTop
     BevelOuter = bvNone
-    Caption = 'Iniciar Sesi'#243'n'
+    Caption = 'Iniciar Sesion'
     Color = clHotLight
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWhite
@@ -43,59 +29,120 @@ object fLogin: TfLogin
     Font.Style = [fsBold]
     ParentBackground = False
     ParentFont = False
-    TabOrder = 3
-  end
-  object edtUsuario: TEdit
-    Left = 79
-    Top = 69
-    Width = 170
-    Height = 23
     TabOrder = 0
   end
-  object edtClave: TEdit
-    Left = 79
-    Top = 104
-    Width = 170
-    Height = 23
-    PasswordChar = '*'
+  object pgcLogin: TPageControl
+    Left = 0
+    Top = 45
+    Width = 370
+    Height = 245
+    ActivePage = tabRegistro
+    Align = alClient
     TabOrder = 1
-  end
-  object btnAceptar: TButton
-    Left = 110
-    Top = 150
-    Width = 100
-    Height = 30
-    Caption = #10003' Aceptar'
-    Default = True
-    TabOrder = 2
-    OnClick = btnAceptarClick
+    OnChange = pgcLoginChange
+    object tabLogin: TTabSheet
+      Caption = 'Iniciar Sesion'
+      object lblUsuario: TLabel
+        Left = 20
+        Top = 32
+        Width = 43
+        Height = 15
+        Caption = 'Usuario:'
+      end
+      object lblClave: TLabel
+        Left = 20
+        Top = 67
+        Width = 32
+        Height = 15
+        Caption = 'Clave:'
+      end
+      object edtUsuario: TEdit
+        Left = 90
+        Top = 29
+        Width = 180
+        Height = 23
+        TabOrder = 0
+      end
+      object edtClave: TEdit
+        Left = 90
+        Top = 64
+        Width = 180
+        Height = 23
+        PasswordChar = '*'
+        TabOrder = 1
+      end
+      object btnAceptar: TButton
+        Left = 120
+        Top = 113
+        Width = 100
+        Height = 30
+        Caption = #10003' Aceptar'
+        Default = True
+        TabOrder = 2
+        OnClick = btnAceptarClick
+      end
+    end
+    object tabRegistro: TTabSheet
+      Caption = 'Registro'
+      object lblRegUsuario: TLabel
+        Left = 20
+        Top = 20
+        Width = 43
+        Height = 15
+        Caption = 'Usuario:'
+      end
+      object lblRegClave: TLabel
+        Left = 20
+        Top = 55
+        Width = 32
+        Height = 15
+        Caption = 'Clave:'
+      end
+      object edtRegUsuario: TEdit
+        Left = 90
+        Top = 17
+        Width = 180
+        Height = 23
+        TabOrder = 0
+      end
+      object edtRegClave: TEdit
+        Left = 90
+        Top = 52
+        Width = 180
+        Height = 23
+        PasswordChar = '*'
+        TabOrder = 1
+      end
+      object btnRegistrarse: TButton
+        Left = 115
+        Top = 100
+        Width = 120
+        Height = 30
+        Caption = #10003' Registrarse'
+        TabOrder = 2
+        OnClick = btnRegistrarseClick
+      end
+    end
   end
   object RESTClient1: TRESTClient
     BaseURL = 'https://borjapau2026.fabricomiweb.com'
     Params = <>
     SynchronizedEvents = False
-    Left = 280
-    Top = 48
+    Left = 300
+    Top = 60
   end
   object RESTRequest1: TRESTRequest
-    AssignedValues = [rvConnectTimeout, rvReadTimeout]
     Client = RESTClient1
     Method = rmPOST
-    Params = <
-      item
-        Kind = pkREQUESTBODY
-        Name = 'body6BFF7C5C278C48808BACF3605D39CFFF'
-        Value = '{'#13#10'    "username": "pau",'#13#10'    "password": "1234"'#13#10'}'
-        ContentTypeStr = 'application/json'
-      end>
+    Params = <>
     Resource = 'Login'
     Response = RESTResponse1
     SynchronizedEvents = False
-    Left = 280
-    Top = 144
+    Left = 300
+    Top = 120
   end
   object RESTResponse1: TRESTResponse
-    Left = 280
-    Top = 96
+    Left = 300
+    Top = 180
   end
 end
