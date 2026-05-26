@@ -6,11 +6,11 @@ uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants,
   System.Classes, Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs,
   Vcl.StdCtrls, Vcl.ExtCtrls, Vcl.DBCtrls, Vcl.DBGrids, Vcl.Mask,
-  Data.DB, FireDAC.Comp.Client, FireDAC.Stan.Intf, FireDAC.Stan.Option,
+  Data.DB, FireDAC.Comp.Client, FireDAC.Stan.Intf,
   FireDAC.Stan.Param, FireDAC.Stan.Error, FireDAC.DatS, FireDAC.Phys.Intf,
   FireDAC.DApt.Intf, FireDAC.Comp.DataSet,
-  REST.Client, REST.Types, System.JSON, Data.Bind.Components,
-  Data.Bind.ObjectScope, Vcl.Grids, Vcl.Buttons;
+  REST.Client, REST.Types, System.JSON, FireDAC.Stan.Option,
+  Data.Bind.Components, Data.Bind.ObjectScope, Vcl.Grids, Vcl.Buttons;
 
 type
   TFrame3 = class(TFrame)
@@ -33,12 +33,13 @@ type
     RESTResponse1: TRESTResponse;
     procedure FDMemTable1AfterPost(DataSet: TDataSet);
     procedure FDMemTable1BeforeDelete(DataSet: TDataSet);
+    procedure FDMemTable1BeforeEdit(DataSet: TDataSet);
+    procedure FDMemTable1AfterRefresh(DataSet: TDataSet);
   private
     sOrigNombre  : string;
     sOrigEmail   : string;
     sOrigTelefono: string;
     procedure CargarDatos;
-    procedure FDMemTable1BeforeEdit(DataSet: TDataSet);
   public
     constructor Create(AOwner: TComponent); override;
   end;
@@ -79,7 +80,6 @@ begin
   fTelefono.DataSet   := FDMemTable1;
 
   FDMemTable1.CreateDataSet;
-  FDMemTable1.BeforeEdit := FDMemTable1BeforeEdit;
   CargarDatos;
 end;
 
@@ -213,7 +213,7 @@ begin
     Exit;
   end;
 
-  if MessageDlg('¿Seguro que quieres eliminar este cliente?',
+  if MessageDlg('Seguro que quieres eliminar este cliente?',
                 mtConfirmation, [mbYes, mbNo], 0) <> mrYes then
   begin
     Abort;
@@ -234,6 +234,11 @@ begin
   end
   else
     ShowMessage('Cliente eliminado correctamente.');
+end;
+
+procedure TFrame3.FDMemTable1AfterRefresh(DataSet: TDataSet);
+begin
+  CargarDatos;
 end;
 
 end.

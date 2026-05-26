@@ -125,8 +125,10 @@ object Frame3: TFrame3
     TitleFont.Style = []
   end
   object FDMemTable1: TFDMemTable
+    BeforeEdit = FDMemTable1BeforeEdit
     AfterPost = FDMemTable1AfterPost
     BeforeDelete = FDMemTable1BeforeDelete
+    AfterRefresh = FDMemTable1AfterRefresh
     FetchOptions.AssignedValues = [evMode]
     FetchOptions.Mode = fmAll
     ResourceOptions.AssignedValues = [rvSilentMode]

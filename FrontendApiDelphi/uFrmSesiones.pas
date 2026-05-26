@@ -6,11 +6,11 @@ uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants,
   System.Classes, Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs,
   Vcl.StdCtrls, Vcl.ExtCtrls, Vcl.DBCtrls, Vcl.DBGrids, Vcl.Mask,
-  Data.DB, FireDAC.Comp.Client, FireDAC.Stan.Intf, FireDAC.Stan.Option,
+  Data.DB, FireDAC.Comp.Client, FireDAC.Stan.Intf,
   FireDAC.Stan.Param, FireDAC.Stan.Error, FireDAC.DatS, FireDAC.Phys.Intf,
   FireDAC.DApt.Intf, FireDAC.Comp.DataSet,
-  REST.Client, REST.Types, System.JSON, Data.Bind.Components,
-  Data.Bind.ObjectScope, Vcl.Grids, Vcl.Buttons;
+  REST.Client, REST.Types, System.JSON, FireDAC.Stan.Option,
+  Data.Bind.Components, Data.Bind.ObjectScope, Vcl.Grids, Vcl.Buttons;
 
 type
   TFrame4 = class(TFrame)
@@ -33,12 +33,13 @@ type
     RESTResponse1: TRESTResponse;
     procedure FDMemTable1AfterPost(DataSet: TDataSet);
     procedure FDMemTable1BeforeDelete(DataSet: TDataSet);
-  private
-    nOrigPelicula : Integer;
-    nOrigSala     : Integer;
-    sOrigFecha    : string;
-    procedure CargarDatos;
     procedure FDMemTable1BeforeEdit(DataSet: TDataSet);
+    procedure FDMemTable1AfterRefresh(DataSet: TDataSet);
+  private
+    nOrigPelicula: Integer;
+    nOrigSala    : Integer;
+    sOrigFecha   : string;
+    procedure CargarDatos;
   public
     constructor Create(AOwner: TComponent); override;
   end;
@@ -52,10 +53,10 @@ uses
 
 constructor TFrame4.Create(AOwner: TComponent);
 var
-  fId        : TIntegerField;
-  fPelicula  : TIntegerField;
-  fSala      : TIntegerField;
-  fFechaHora : TStringField;
+  fId       : TIntegerField;
+  fPelicula : TIntegerField;
+  fSala     : TIntegerField;
+  fFechaHora: TStringField;
 begin
   inherited Create(AOwner);
 
@@ -77,7 +78,6 @@ begin
   fFechaHora.DataSet   := FDMemTable1;
 
   FDMemTable1.CreateDataSet;
-  FDMemTable1.BeforeEdit := FDMemTable1BeforeEdit;
   CargarDatos;
 end;
 
@@ -162,7 +162,7 @@ begin
 
       if RESTResponse1.StatusCode in [200, 201] then
       begin
-        ShowMessage('Sesión creada correctamente.');
+        ShowMessage('Sesion creada correctamente.');
         CargarDatos;
       end
       else
@@ -189,7 +189,7 @@ begin
         RESTRequest1.Execute;
 
         if RESTResponse1.StatusCode in [200, 201] then
-          ShowMessage('Sesión actualizada correctamente.')
+          ShowMessage('Sesion actualizada correctamente.')
         else
           ShowMessage('Error al actualizar: ' + RESTResponse1.Content);
       end;
@@ -211,7 +211,7 @@ begin
     Exit;
   end;
 
-  if MessageDlg('¿Seguro que quieres eliminar esta sesión?',
+  if MessageDlg('Seguro que quieres eliminar esta sesion?',
                 mtConfirmation, [mbYes, mbNo], 0) <> mrYes then
   begin
     Abort;
@@ -231,7 +231,12 @@ begin
     Abort;
   end
   else
-    ShowMessage('Sesión eliminada correctamente.');
+    ShowMessage('Sesion eliminada correctamente.');
+end;
+
+procedure TFrame4.FDMemTable1AfterRefresh(DataSet: TDataSet);
+begin
+  CargarDatos;
 end;
 
 end.
