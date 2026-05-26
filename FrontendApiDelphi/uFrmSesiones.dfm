@@ -99,14 +99,24 @@ object Frame4: TFrame4
       DataSource = DataSource1
       TabOrder = 1
     end
-    object DBEdtFechaHora: TDBEdit
+    object dtpFecha: TDateTimePicker
       Left = 100
       Top = 82
-      Width = 200
-      Height = 23
-      DataField = 'fecha_hora'
-      DataSource = DataSource1
+      Width = 120
+      Height = 21
+      Date = 45000.000000000000000000
+      Time = 0.500000000000000000
       TabOrder = 2
+    end
+    object dtpHora: TDateTimePicker
+      Left = 230
+      Top = 82
+      Width = 70
+      Height = 21
+      Date = 45000.000000000000000000
+      Time = 0.500000000000000000
+      Kind = dtkTime
+      TabOrder = 3
     end
   end
   object DBGrid1: TDBGrid
