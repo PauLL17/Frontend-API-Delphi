@@ -24,6 +24,7 @@ type
     actSesiones: TAction;
     actEntradas: TAction;
     actSalir: TAction;
+    adminButton: TButton;
     procedure FormCreate(Sender: TObject);
     procedure actPeliculasExecute(Sender: TObject);
     procedure actSalasExecute(Sender: TObject);
@@ -74,6 +75,8 @@ begin
   finally
     fLogin.Free;
   end;
+  if sRolUsuario = 'admin' then adminButton.Visible := True;
+
 end;
 
 procedure TForm1.actPeliculasExecute(Sender: TObject);

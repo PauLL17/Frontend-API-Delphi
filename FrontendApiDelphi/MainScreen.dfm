@@ -18,7 +18,7 @@ object Form1: TForm1
     Left = 0
     Top = 0
     Width = 950
-    Height = 26
+    Height = 29
     UseSystemFont = False
     ActionManager = ActionManager1
     Color = clMenuBar
@@ -36,7 +36,7 @@ object Form1: TForm1
   end
   object tbHorizontal: TActionToolBar
     Left = 0
-    Top = 26
+    Top = 29
     Width = 950
     Height = 29
     Margins.Left = 10
@@ -59,12 +59,13 @@ object Form1: TForm1
     Orientation = boRightToLeft
     ParentFont = False
     Spacing = 0
+    ExplicitTop = 26
   end
   object tbNavLateral: TActionToolBar
     Left = 0
-    Top = 55
+    Top = 58
     Width = 115
-    Height = 545
+    Height = 542
     Margins.Left = 300
     Margins.Top = 300
     Margins.Right = 300
@@ -86,15 +87,28 @@ object Form1: TForm1
     HorzMargin = 10
     ParentFont = False
     Spacing = 0
+    ExplicitTop = 55
+    ExplicitHeight = 545
   end
   object pnlCentral: TPanel
     Left = 115
-    Top = 55
+    Top = 58
     Width = 835
-    Height = 545
+    Height = 542
     Align = alClient
     BevelOuter = bvNone
     TabOrder = 3
+    ExplicitTop = 55
+    ExplicitHeight = 545
+  end
+  object adminButton: TButton
+    Left = 867
+    Top = 6
+    Width = 75
+    Height = 20
+    Caption = 'Permisos'
+    TabOrder = 4
+    Visible = False
   end
   object ImageList1: TImageList
     ColorDepth = cd32Bit
