@@ -36,7 +36,7 @@ object fLogin: TfLogin
     Top = 45
     Width = 370
     Height = 245
-    ActivePage = tabRegistro
+    ActivePage = tabLogin
     Align = alClient
     TabOrder = 1
     OnChange = pgcLoginChange

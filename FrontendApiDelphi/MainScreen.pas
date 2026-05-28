@@ -8,7 +8,7 @@ uses
   System.Actions, Vcl.ActnList, Vcl.ActnMan, Vcl.ActnMenus, Vcl.ActnCtrls,
   Vcl.PlatformDefaultStyleActnCtrls, Vcl.ImgList, System.ImageList,
   Vcl.ToolWin, Vcl.ExtCtrls, Vcl.ComCtrls, Vcl.Grids, Vcl.StdCtrls, Vcl.Mask,
-  Vcl.DBCtrls, Vcl.Buttons;
+  Vcl.DBCtrls, Vcl.Buttons, unit6;
 
 type
   TForm1 = class(TForm)
@@ -32,8 +32,10 @@ type
     procedure actSesionesExecute(Sender: TObject);
     procedure actEntradasExecute(Sender: TObject);
     procedure actSalirExecute(Sender: TObject);
+    procedure adminButtonClick(Sender: TObject);
   private
     procedure CargarFrame(AFrame: TFrame);
+
   public
     { Public declarations }
   end;
@@ -44,14 +46,11 @@ var
 implementation
 
 uses
-  uLogin, uAPI, uFrmPeliculas, uFrmSalas, uFrmClientes, uFrmSesiones, uFrmEntradas;
+  uLogin, uAPI, uFrmPeliculas, uFrmSalas, uFrmClientes, uFrmSesiones,
+  uFrmEntradas;
 
 {$R *.dfm}
 
-{ CargarFrame
-    - Destruye cualquier frame que haya en pnlCentral
-    - Asigna el nuevo frame como hijo de pnlCentral
-    - Lo alinea para que ocupe todo el panel }
 procedure TForm1.CargarFrame(AFrame: TFrame);
 var
   i: Integer;
@@ -60,8 +59,9 @@ begin
   for i := pnlCentral.ControlCount - 1 downto 0 do
     pnlCentral.Controls[i].Free;
 
+
   AFrame.Parent := pnlCentral;
-  AFrame.Align  := alClient;
+  AFrame.Align := alClient;
 end;
 
 procedure TForm1.FormCreate(Sender: TObject);
@@ -69,51 +69,52 @@ begin
   fLogin := TfLogin.Create(Application);
   try
     if fLogin.ShowModal = mrOk then
-      Caption := 'CineElxVirtual  |  ' + sNombreUsuario + ' (' + sRolUsuario + ')'
+      Caption := 'CineElxVirtual  |  ' + sNombreUsuario + ' (' +
+        sRolUsuario + ')'
     else
       Application.Terminate;
   finally
     fLogin.Free;
   end;
-  if sRolUsuario = 'admin' then adminButton.Visible := True;
-
+  if sRolUsuario = 'admin' then
+    adminButton.Visible := True;
 end;
 
 procedure TForm1.actPeliculasExecute(Sender: TObject);
 begin
-  { Carga el frame de Películas en el panel central }
-  CargarFrame(TFrame1.Create(pnlCentral));
+  CargarFrame(TFrame1.Create(pnlCentral));  // TFrame1 está en uFrmPeliculas
 end;
 
 procedure TForm1.actSalasExecute(Sender: TObject);
 begin
-  { Carga el frame de Salas en el panel central }
-  CargarFrame(TFrame2.Create(pnlCentral));
+  CargarFrame(TFrame2.Create(pnlCentral));  // TFrame2 está en uFrmSalas
 end;
 
 procedure TForm1.actClientesExecute(Sender: TObject);
 begin
-  { Carga el frame de Clientes en el panel central }
-  CargarFrame(TFrame3.Create(pnlCentral));
+  CargarFrame(TFrame3.Create(pnlCentral));  // TFrame3 está en uFrmClientes
 end;
 
 procedure TForm1.actSesionesExecute(Sender: TObject);
 begin
-  { Carga el frame de Sesiones en el panel central }
-  CargarFrame(TFrame4.Create(pnlCentral));
+  CargarFrame(TFrame4.Create(pnlCentral));  // TFrame4 está en uFrmSesiones
 end;
 
 procedure TForm1.actEntradasExecute(Sender: TObject);
 begin
-  { Carga el frame de Entradas en el panel central }
-  CargarFrame(TFrame5.Create(pnlCentral));
+  CargarFrame(TFrame5.Create(pnlCentral));  // TFrame5 está en uFrmEntradas
+end;
+
+procedure TForm1.adminButtonClick(Sender: TObject);
+begin
+  // Cargar el frame de usuarios como cualquier otro
+  CargarFrame(TuFrmUsuarios.Create(pnlCentral));
 end;
 
 procedure TForm1.actSalirExecute(Sender: TObject);
 begin
-  { Acción Salir - pide confirmación y cierra la aplicación }
-  if MessageDlg('¿Seguro que quieres salir?',
-                mtConfirmation, [mbYes, mbNo], 0) = mrYes then
+  if MessageDlg('¿Seguro que quieres salir?', mtConfirmation,
+       [mbYes, mbNo], 0) = mrYes then
     Application.Terminate;
 end;
 

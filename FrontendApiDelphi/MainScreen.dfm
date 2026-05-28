@@ -59,7 +59,6 @@ object Form1: TForm1
     Orientation = boRightToLeft
     ParentFont = False
     Spacing = 0
-    ExplicitTop = 26
   end
   object tbNavLateral: TActionToolBar
     Left = 0
@@ -87,8 +86,6 @@ object Form1: TForm1
     HorzMargin = 10
     ParentFont = False
     Spacing = 0
-    ExplicitTop = 55
-    ExplicitHeight = 545
   end
   object pnlCentral: TPanel
     Left = 115
@@ -98,8 +95,6 @@ object Form1: TForm1
     Align = alClient
     BevelOuter = bvNone
     TabOrder = 3
-    ExplicitTop = 55
-    ExplicitHeight = 545
   end
   object adminButton: TButton
     Left = 867
@@ -109,6 +104,7 @@ object Form1: TForm1
     Caption = 'Permisos'
     TabOrder = 4
     Visible = False
+    OnClick = adminButtonClick
   end
   object ImageList1: TImageList
     ColorDepth = cd32Bit
