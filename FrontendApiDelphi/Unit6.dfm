@@ -52,15 +52,79 @@ object uFrmUsuarios: TuFrmUsuarios
       TabOrder = 0
     end
   end
-  object DBGrid1: TDBGrid
+  object pnlFormulario: TPanel
     Left = 0
     Top = 113
     Width = 640
-    Height = 367
+    Height = 90
+    Align = alTop
+    BevelOuter = bvNone
+    TabOrder = 2
+    object lblUsername: TLabel
+      Left = 10
+      Top = 15
+      Width = 56
+      Height = 15
+      Caption = 'Username:'
+    end
+    object lblRol: TLabel
+      Left = 10
+      Top = 50
+      Width = 20
+      Height = 15
+      Caption = 'Rol:'
+    end
+    object lblFechaRegistro: TLabel
+      Left = 330
+      Top = 15
+      Width = 77
+      Height = 15
+      Caption = 'Fecha registro:'
+    end
+    object DBEdtUsername: TDBEdit
+      Left = 100
+      Top = 12
+      Width = 200
+      Height = 23
+      DataField = 'username'
+      DataSource = DataSource1
+      ReadOnly = True
+      TabOrder = 0
+    end
+    object DBComboRol: TDBComboBox
+      Left = 100
+      Top = 47
+      Width = 150
+      Height = 23
+      DataField = 'rol'
+      DataSource = DataSource1
+      Items.Strings = (
+        'admin'
+        'usuario'
+        'empleado'
+        'gerente')
+      TabOrder = 1
+    end
+    object DBEdtFechaRegistro: TDBEdit
+      Left = 420
+      Top = 12
+      Width = 150
+      Height = 23
+      DataField = 'fecha_registro'
+      DataSource = DataSource1
+      ReadOnly = True
+      TabOrder = 2
+    end
+  end
+  object DBGrid1: TDBGrid
+    Left = 0
+    Top = 203
+    Width = 640
+    Height = 277
     Align = alClient
     DataSource = DataSource1
     Options = [dgTitles, dgIndicator, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgRowSelect, dgAlwaysShowSelection, dgConfirmDelete, dgCancelOnExit]
-    TabOrder = 2
+    TabOrder = 3
     TitleFont.Charset = DEFAULT_CHARSET
     TitleFont.Color = clWindowText
     TitleFont.Height = -12
@@ -80,19 +144,19 @@ object uFrmUsuarios: TuFrmUsuarios
     UpdateOptions.CheckRequired = False
     UpdateOptions.AutoCommitUpdates = True
     Left = 200
-    Top = 200
+    Top = 280
   end
   object DataSource1: TDataSource
     DataSet = FDMemTable1
     Left = 280
-    Top = 200
+    Top = 280
   end
   object RESTClient1: TRESTClient
     BaseURL = 'https://borjapau2026.fabricomiweb.com'
     Params = <>
     SynchronizedEvents = False
     Left = 360
-    Top = 200
+    Top = 280
   end
   object RESTRequest1: TRESTRequest
     Client = RESTClient1
@@ -101,10 +165,10 @@ object uFrmUsuarios: TuFrmUsuarios
     Response = RESTResponse1
     SynchronizedEvents = False
     Left = 440
-    Top = 200
+    Top = 280
   end
   object RESTResponse1: TRESTResponse
     Left = 520
-    Top = 200
+    Top = 280
   end
 end
