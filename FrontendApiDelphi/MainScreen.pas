@@ -35,7 +35,6 @@ type
     procedure actUsuariosExecute(Sender: TObject);
   private
     procedure CargarFrame(AFrame: TFrame);
-
   public
     { Public declarations }
   end;
@@ -55,13 +54,11 @@ procedure TForm1.CargarFrame(AFrame: TFrame);
 var
   i: Integer;
 begin
-
   for i := pnlCentral.ControlCount - 1 downto 0 do
     pnlCentral.Controls[i].Free;
 
-
   AFrame.Parent := pnlCentral;
-  AFrame.Align := alClient;
+  AFrame.Align  := alClient;
 end;
 
 procedure TForm1.FormCreate(Sender: TObject);
@@ -69,8 +66,7 @@ begin
   fLogin := TfLogin.Create(Application);
   try
     if fLogin.ShowModal = mrOk then
-      Caption := 'CineElxVirtual  |  ' + sNombreUsuario + ' (' +
-        sRolUsuario + ')'
+      Caption := 'CineElxVirtual  |  ' + sNombreUsuario + ' (' + sRolUsuario + ')'
     else
       Application.Terminate;
   finally
@@ -81,27 +77,27 @@ end;
 
 procedure TForm1.actPeliculasExecute(Sender: TObject);
 begin
-  CargarFrame(TFrame1.Create(pnlCentral));  // TFrame1 está en uFrmPeliculas
+  CargarFrame(TFrame1.Create(pnlCentral));
 end;
 
 procedure TForm1.actSalasExecute(Sender: TObject);
 begin
-  CargarFrame(TFrame2.Create(pnlCentral));  // TFrame2 está en uFrmSalas
+  CargarFrame(TFrame2.Create(pnlCentral));
 end;
 
 procedure TForm1.actClientesExecute(Sender: TObject);
 begin
-  CargarFrame(TFrame3.Create(pnlCentral));  // TFrame3 está en uFrmClientes
+  CargarFrame(TFrame3.Create(pnlCentral));
 end;
 
 procedure TForm1.actSesionesExecute(Sender: TObject);
 begin
-  CargarFrame(TFrame4.Create(pnlCentral));  // TFrame4 está en uFrmSesiones
+  CargarFrame(TFrame4.Create(pnlCentral));
 end;
 
 procedure TForm1.actEntradasExecute(Sender: TObject);
 begin
-  CargarFrame(TFrame5.Create(pnlCentral));  // TFrame5 está en uFrmEntradas
+  CargarFrame(TFrame5.Create(pnlCentral));
 end;
 
 procedure TForm1.actUsuariosExecute(Sender: TObject);
@@ -111,7 +107,7 @@ end;
 
 procedure TForm1.actSalirExecute(Sender: TObject);
 begin
-  if MessageDlg('¿Seguro que quieres salir?', mtConfirmation,
+  if MessageDlg('Â¿Seguro que quieres salir?', mtConfirmation,
        [mbYes, mbNo], 0) = mrYes then
     Application.Terminate;
 end;

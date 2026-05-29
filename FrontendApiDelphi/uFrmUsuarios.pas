@@ -30,15 +30,18 @@ type
     DBComboRol: TDBComboBox;
     lblFechaRegistro: TLabel;
     DBEdtFechaRegistro: TDBEdit;
+    btnDetach: TSpeedButton;
     procedure FDMemTable1BeforeEdit(DataSet: TDataSet);
     procedure FDMemTable1AfterPost(DataSet: TDataSet);
     procedure FDMemTable1BeforeDelete(DataSet: TDataSet);
     procedure FDMemTable1AfterRefresh(DataSet: TDataSet);
+    procedure btnDetachClick(Sender: TObject);
   private
     FToken: string;
     sOrigRol: string;
     procedure CargarDatos;
     procedure FechaGetText(Sender: TField; var Text: string; DisplayText: Boolean);
+    procedure VentanaClose(Sender: TObject; var Action: TCloseAction);
   public
     constructor Create(AOwner: TComponent); override;
     property Token: string read FToken write FToken;
@@ -49,7 +52,7 @@ implementation
 {$R *.dfm}
 
 uses
-  uAPI;  // Aquí se define sTokenJWT
+  uAPI;  // Aquï¿½ se define sTokenJWT
 
 // -----------------------------------------------------------------
 // Parsea cadenas con formato "YYYY-MM-DD" a TDateTime
@@ -104,7 +107,7 @@ begin
   fFecha := TDateTimeField.Create(FDMemTable1);
   fFecha.FieldName := 'fecha_registro';
   fFecha.DataSet   := FDMemTable1;
-  fFecha.OnGetText := FechaGetText;  // Formatea la visualización
+  fFecha.OnGetText := FechaGetText;  // Formatea la visualizaciï¿½n
 
   FDMemTable1.CreateDataSet;
 
@@ -241,7 +244,7 @@ begin
     Exit;
   end;
 
-  if MessageDlg('¿Seguro que quieres eliminar este usuario?',
+  if MessageDlg('ï¿½Seguro que quieres eliminar este usuario?',
                 mtConfirmation, [mbYes, mbNo], 0) <> mrYes then
   begin
     Abort;
@@ -267,6 +270,32 @@ end;
 procedure TuFrmUsuarios.FDMemTable1AfterRefresh(DataSet: TDataSet);
 begin
   CargarDatos;
+end;
+
+procedure TuFrmUsuarios.btnDetachClick(Sender: TObject);
+var
+  ventana: TForm;
+begin
+  ventana          := TForm.Create(Application);
+  ventana.Caption  := lblTitulo.Caption;
+  ventana.Width    := 900;
+  ventana.Height   := 600;
+  ventana.Position := poScreenCenter;
+  ventana.OnClose  := VentanaClose;
+
+  Owner.RemoveComponent(Self);
+  ventana.InsertComponent(Self);
+
+  Parent := ventana;
+  Align  := alClient;
+
+  btnDetach.Visible := False;
+  ventana.Show;
+end;
+
+procedure TuFrmUsuarios.VentanaClose(Sender: TObject; var Action: TCloseAction);
+begin
+  Action := caFree;
 end;
 
 end.

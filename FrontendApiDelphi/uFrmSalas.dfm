@@ -27,6 +27,24 @@ object Frame2: TFrame2
       Font.Style = [fsBold]
       ParentFont = False
     end
+    object btnDetach: TSpeedButton
+      Left = 1038
+      Top = 0
+      Width = 40
+      Height = 40
+      Align = alRight
+      Caption = #9633
+      Flat = True
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWhite
+      Font.Height = -16
+      Font.Name = 'Segoe UI'
+      Font.Style = []
+      Hint = 'Abrir en ventana independiente'
+      ParentFont = False
+      ShowHint = True
+      OnClick = btnDetachClick
+    end
   end
   object Panel1: TPanel
     Left = 0

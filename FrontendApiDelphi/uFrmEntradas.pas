@@ -39,10 +39,12 @@ type
     RESTClient1: TRESTClient;
     RESTRequest1: TRESTRequest;
     RESTResponse1: TRESTResponse;
+    btnDetach: TSpeedButton;
     procedure FDMemTable1AfterPost(DataSet: TDataSet);
     procedure FDMemTable1BeforeDelete(DataSet: TDataSet);
     procedure FDMemTable1BeforeEdit(DataSet: TDataSet);
     procedure FDMemTable1AfterRefresh(DataSet: TDataSet);
+    procedure btnDetachClick(Sender: TObject);
   private
     nOrigSesion  : Integer;
     nOrigCliente : Integer;
@@ -53,6 +55,7 @@ type
       out DictClientes  : TDictionary<Integer, string>;
       out DictSesiones  : TDictionary<Integer, TSesionInfo>;
       out DictPeliculas : TDictionary<Integer, string>);
+    procedure VentanaClose(Sender: TObject; var Action: TCloseAction);
   public
     constructor Create(AOwner: TComponent); override;
   end;
@@ -383,6 +386,32 @@ end;
 procedure TFrame5.FDMemTable1AfterRefresh(DataSet: TDataSet);
 begin
   CargarDatos;
+end;
+
+procedure TFrame5.btnDetachClick(Sender: TObject);
+var
+  ventana: TForm;
+begin
+  ventana          := TForm.Create(Application);
+  ventana.Caption  := lblTitulo.Caption;
+  ventana.Width    := 900;
+  ventana.Height   := 600;
+  ventana.Position := poScreenCenter;
+  ventana.OnClose  := VentanaClose;
+
+  Owner.RemoveComponent(Self);
+  ventana.InsertComponent(Self);
+
+  Parent := ventana;
+  Align  := alClient;
+
+  btnDetach.Visible := False;
+  ventana.Show;
+end;
+
+procedure TFrame5.VentanaClose(Sender: TObject; var Action: TCloseAction);
+begin
+  Action := caFree;
 end;
 
 end.

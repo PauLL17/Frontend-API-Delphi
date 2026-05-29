@@ -29,14 +29,17 @@ type
     RESTClient1: TRESTClient;
     RESTRequest1: TRESTRequest;
     RESTResponse1: TRESTResponse;
+    btnDetach: TSpeedButton;
     procedure FDMemTable1AfterPost(DataSet: TDataSet);
     procedure FDMemTable1BeforeDelete(DataSet: TDataSet);
     procedure FDMemTable1AfterRefresh(DataSet: TDataSet);
     procedure FDMemTable1BeforeEdit(DataSet: TDataSet);
+    procedure btnDetachClick(Sender: TObject);
   private
     sOrigNombre   : string;
     nOrigCapacidad: Integer;
     procedure CargarDatos;
+    procedure VentanaClose(Sender: TObject; var Action: TCloseAction);
   public
     constructor Create(AOwner: TComponent); override;
   end;
@@ -223,6 +226,32 @@ end;
 procedure TFrame2.FDMemTable1AfterRefresh(DataSet: TDataSet);
 begin
   CargarDatos;
+end;
+
+procedure TFrame2.btnDetachClick(Sender: TObject);
+var
+  ventana: TForm;
+begin
+  ventana          := TForm.Create(Application);
+  ventana.Caption  := lblTitulo.Caption;
+  ventana.Width    := 900;
+  ventana.Height   := 600;
+  ventana.Position := poScreenCenter;
+  ventana.OnClose  := VentanaClose;
+
+  Owner.RemoveComponent(Self);
+  ventana.InsertComponent(Self);
+
+  Parent := ventana;
+  Align  := alClient;
+
+  btnDetach.Visible := False;
+  ventana.Show;
+end;
+
+procedure TFrame2.VentanaClose(Sender: TObject; var Action: TCloseAction);
+begin
+  Action := caFree;
 end;
 
 end.

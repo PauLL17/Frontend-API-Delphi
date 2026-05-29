@@ -17,15 +17,34 @@ object Frame4: TFrame4
     object lblTitulo: TLabel
       Left = 10
       Top = 12
-      Width = 117
+      Width = 111
       Height = 15
-      Caption = 'Gesti'#195#179'n de Sesiones'
+      Caption = 'Gesti'#243'n de Sesiones'
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWhite
       Font.Height = -12
       Font.Name = 'Segoe UI'
       Font.Style = [fsBold]
       ParentFont = False
+    end
+    object btnDetach: TSpeedButton
+      Left = 1038
+      Top = 0
+      Width = 40
+      Height = 40
+      Hint = 'Abrir en ventana independiente'
+      Align = alRight
+      Caption = #9633
+      Flat = True
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWhite
+      Font.Height = -16
+      Font.Name = 'Segoe UI'
+      Font.Style = []
+      ParentFont = False
+      ParentShowHint = False
+      ShowHint = True
+      OnClick = btnDetachClick
     end
   end
   object Panel1: TPanel
