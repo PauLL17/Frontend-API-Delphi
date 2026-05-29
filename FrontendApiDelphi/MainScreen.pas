@@ -1,4 +1,4 @@
-unit MainScreen;
+﻿unit MainScreen;
 
 interface
 
@@ -72,7 +72,7 @@ begin
   finally
     fLogin.Free;
   end;
-  actUsuarios.Visible := sRolUsuario = 'admin';
+  actUsuarios.Visible := (sRolUsuario = 'admin') or (sRolUsuario = 'gerente');
 end;
 
 procedure TForm1.actPeliculasExecute(Sender: TObject);
